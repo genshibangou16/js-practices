@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 function main() {
   for (let n = 1; n < 21; n++) {
     fizzbuzz(n);
