@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+import minimist from "minimist";
+
+function get_target(argv) {
+  const date = new Date();
+  const { m = date.getMonth() + 1, y = date.getFullYear() } = minimist(
+    argv.slice(2),
+  );
+  if (isNaN(y) || y < 1 || y > 9999) {
+    console.log(`cal: year '${y}' not in range 1..9999`);
+    return { year: null, month: null };
+  }
+  if (isNaN(m) || m < 1 || m > 12) {
+    console.log(`cal: ${m} is neither a month number (1..12) nor a name`);
+    return { year: null, month: null };
+  }
+  return { year: y, month: m - 1 };
+}
+
+function getLastDate(targetDate) {
+  targetDate.setMonth(targetDate.getMonth() + 1);
+  targetDate.setDate(0);
+  return targetDate;
+}
+
+function format_output(targetDate) {
+  const dateArray = [];
+  for (let n = 0; n < targetDate.getDay(); n++) {
+    dateArray.push("  ");
+  }
+  const lastDate = getLastDate(targetDate);
+  for (let date = 1; date <= lastDate.getDate(); date++) {
+    dateArray.push(String(date).padStart(2));
+  }
+  const monthString = [];
+  for (let index = 0; index < dateArray.length; index += 7) {
+    monthString.push(dateArray.slice(index, index + 7).join(" "));
+  }
+  return monthString.join("\n");
+}
+
+function main() {
+  const { year = null, month = null } = get_target(process.argv);
+  if (year === null || month === null) return;
+  const targetDate = new Date(year, month);
+  console.log(`      ${month + 1}月 ${year}`);
+  console.log(format_output(targetDate));
+}
+
+main();
