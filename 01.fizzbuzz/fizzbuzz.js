@@ -8,7 +8,7 @@ function fizzbuzz(number) {
   } else if (number % 5 === 0) {
     console.log("Buzz");
   } else {
-    console.log(`${number}`);
+    console.log(String(number));
   }
 }
 
