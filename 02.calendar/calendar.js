@@ -45,6 +45,7 @@ function main() {
   if (year === null || month === null) return;
   const targetDate = new Date(year, month);
   console.log(`      ${month + 1}月 ${year}`);
+  console.log("日 月 火 水 木 金 土");
   console.log(format_output(targetDate));
 }
 
