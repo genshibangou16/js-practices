@@ -1,11 +1,5 @@
 #!/usr/bin/env node
 
-function main() {
-  for (let n = 1; n < 21; n++) {
-    fizzbuzz(n);
-  }
-}
-
 function fizzbuzz(number) {
   if (number % 3 == 0 && number % 5 == 0) {
     console.log("FizzBuzz");
@@ -15,6 +9,12 @@ function fizzbuzz(number) {
     console.log("Buzz");
   } else {
     console.log(`${number}`);
+  }
+}
+
+function main() {
+  for (let n = 1; n <= 20; n++) {
+    fizzbuzz(n);
   }
 }
 
