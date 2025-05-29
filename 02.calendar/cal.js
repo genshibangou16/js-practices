@@ -40,7 +40,7 @@ function generate(targetDate) {
 }
 
 function main() {
-  const { year = null, month = null } = parseInput(process.argv);
+  const { year, month } = parseInput(process.argv);
   if (year === null || month === null) return;
   const targetDate = new Date(year, month);
   console.log(`      ${month + 1}月 ${year}`);
