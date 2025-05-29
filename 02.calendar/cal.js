@@ -32,11 +32,11 @@ function generate(firstDate) {
   for (let date = 1; date <= lastDate.getDate(); date++) {
     dateArray.push(String(date).padStart(2));
   }
-  const monthString = [];
+  const monthStringArray = [];
   for (let index = 0; index < dateArray.length; index += 7) {
-    monthString.push(dateArray.slice(index, index + 7).join(" "));
+    monthStringArray.push(dateArray.slice(index, index + 7).join(" "));
   }
-  return monthString.join("\n");
+  return monthStringArray.join("\n");
 }
 
 function main() {
