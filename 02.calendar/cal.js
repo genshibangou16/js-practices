@@ -2,7 +2,7 @@
 
 import minimist from "minimist";
 
-function get_target(argv) {
+function parseInput(argv) {
   const date = new Date();
   const { m: month = date.getMonth() + 1, y: year = date.getFullYear() } =
     minimist(argv.slice(2));
@@ -23,7 +23,7 @@ function getLastDate(targetDate) {
   return targetDate;
 }
 
-function format_output(targetDate) {
+function generate(targetDate) {
   const dateArray = [];
   for (let n = 0; n < targetDate.getDay(); n++) {
     dateArray.push("  ");
@@ -40,12 +40,12 @@ function format_output(targetDate) {
 }
 
 function main() {
-  const { year = null, month = null } = get_target(process.argv);
+  const { year = null, month = null } = parseInput(process.argv);
   if (year === null || month === null) return;
   const targetDate = new Date(year, month);
   console.log(`      ${month + 1}月 ${year}`);
   console.log("日 月 火 水 木 金 土");
-  console.log(format_output(targetDate));
+  console.log(generate(targetDate));
 }
 
 main();
