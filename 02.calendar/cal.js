@@ -17,18 +17,16 @@ function parseInput(argv) {
   return { year: year, month: month - 1 };
 }
 
-function getLastDate(targetDate) {
-  targetDate.setMonth(targetDate.getMonth() + 1);
-  targetDate.setDate(0);
-  return targetDate;
-}
-
 function generate(firstDate) {
   const dateArray = [];
   for (let n = 0; n < firstDate.getDay(); n++) {
     dateArray.push("  ");
   }
-  const lastDate = getLastDate(firstDate);
+  const lastDate = new Date(
+    firstDate.getFullYear(),
+    firstDate.getMonth() + 1,
+    0,
+  );
   for (let date = 1; date <= lastDate.getDate(); date++) {
     dateArray.push(String(date).padStart(2));
   }
