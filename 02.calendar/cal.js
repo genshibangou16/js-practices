@@ -4,18 +4,17 @@ import minimist from "minimist";
 
 function get_target(argv) {
   const date = new Date();
-  const { m = date.getMonth() + 1, y = date.getFullYear() } = minimist(
-    argv.slice(2),
-  );
-  if (isNaN(y) || y < 1 || y > 9999) {
-    console.log(`cal: year '${y}' not in range 1..9999`);
+  const { m: month = date.getMonth() + 1, y: year = date.getFullYear() } =
+    minimist(argv.slice(2));
+  if (isNaN(year) || year < 1 || year > 9999) {
+    console.log(`cal: year '${year}' not in range 1..9999`);
     return { year: null, month: null };
   }
-  if (isNaN(m) || m < 1 || m > 12) {
-    console.log(`cal: ${m} is neither a month number (1..12) nor a name`);
+  if (isNaN(month) || month < 1 || month > 12) {
+    console.log(`cal: ${month} is neither a month number (1..12) nor a name`);
     return { year: null, month: null };
   }
-  return { year: y, month: m - 1 };
+  return { year: year, month: month - 1 };
 }
 
 function getLastDate(targetDate) {
