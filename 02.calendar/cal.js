@@ -27,8 +27,8 @@ function generate(firstDate) {
     firstDate.getMonth() + 1,
     0,
   );
-  for (let date = 1; date <= lastDate.getDate(); date++) {
-    dateArray.push(String(date).padStart(2));
+  for (let dayNumber = 1; dayNumber <= lastDate.getDate(); dayNumber++) {
+    dateArray.push(String(dayNumber).padStart(2));
   }
   const monthStringArray = [];
   for (let index = 0; index < dateArray.length; index += 7) {
