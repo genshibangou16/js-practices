@@ -41,7 +41,7 @@ function generate(targetDate) {
 
 function main() {
   const { year, month } = parseInput(process.argv);
-  if (year === null || month === null) return;
+  if (year === null || month === null) process.exit(1);
   const targetDate = new Date(year, month);
   console.log(`      ${month + 1}月 ${year}`);
   console.log("日 月 火 水 木 金 土");
