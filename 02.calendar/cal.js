@@ -23,12 +23,12 @@ function getLastDate(targetDate) {
   return targetDate;
 }
 
-function generate(targetDate) {
+function generate(firstDate) {
   const dateArray = [];
-  for (let n = 0; n < targetDate.getDay(); n++) {
+  for (let n = 0; n < firstDate.getDay(); n++) {
     dateArray.push("  ");
   }
-  const lastDate = getLastDate(targetDate);
+  const lastDate = getLastDate(firstDate);
   for (let date = 1; date <= lastDate.getDate(); date++) {
     dateArray.push(String(date).padStart(2));
   }
@@ -42,10 +42,10 @@ function generate(targetDate) {
 function main() {
   const { year, month } = parseInput(process.argv);
   if (year === null || month === null) process.exit(1);
-  const targetDate = new Date(year, month);
+  const firstDate = new Date(year, month);
   console.log(`      ${month + 1}月 ${year}`);
   console.log("日 月 火 水 木 金 土");
-  console.log(generate(targetDate));
+  console.log(generate(firstDate));
 }
 
 main();
