@@ -16,20 +16,48 @@ class DB {
   constructor(target) {
     this.db = new sqlite3.Database(target);
   }
+  run(sql, ...args) {
+    const { params, callback } = this.extractParamsAndCallback(args);
+    this.db.run(sql, ...params, function (err) {
+      callback(err, this);
+    });
+  }
+  get(sql, ...args) {
+    const { params, callback } = this.extractParamsAndCallback(args);
+    this.db.get(sql, ...params, function (err, row) {
+      callback(err, row);
+    });
+  }
+  all(sql, ...args) {
+    const { params, callback } = this.extractParamsAndCallback(args);
+    this.db.all(sql, ...params, function (err, rows) {
+      callback(err, rows);
+    });
+  }
+  extractParamsAndCallback(args) {
+    const maybeCallback = args[args.length - 1];
+    const isCallback = typeof maybeCallback === "function";
+    const callback = isCallback ? maybeCallback : () => {};
+    const params = isCallback ? args.slice(0, -1) : args;
+    return { callback, params };
+  }
+}
+
+class AsyncDB extends DB {
   run(sql, ...params) {
     return new Promise((resolve, reject) => {
-      this.db.run(sql, ...params, function (err) {
+      super.run(sql, ...params, function (err, stmt) {
         if (err) {
           reject(err);
         } else {
-          resolve(this);
+          resolve(stmt);
         }
       });
     });
   }
   get(sql, ...params) {
     return new Promise((resolve, reject) => {
-      this.db.get(sql, ...params, function (err, rows) {
+      super.get(sql, ...params, function (err, rows) {
         if (err) {
           reject(err);
         } else {
@@ -40,7 +68,7 @@ class DB {
   }
   all(sql, ...params) {
     return new Promise((resolve, reject) => {
-      this.db.all(sql, ...params, function (err, rows) {
+      super.all(sql, ...params, function (err, rows) {
         if (err) {
           reject(err);
         } else {
@@ -52,7 +80,7 @@ class DB {
 }
 
 async function practice2() {
-  const db = new DB(":memory:");
+  const db = new AsyncDB(":memory:");
   db.run(CREATE)
     .then(() => {
       return db.run(INSERT);
@@ -95,7 +123,7 @@ async function practice2() {
 }
 
 async function practice3() {
-  const db = new DB(":memory:");
+  const db = new AsyncDB(":memory:");
   await db.run(CREATE);
   const res_insert = await db.run(INSERT);
   console.log(res_insert.lastID);
