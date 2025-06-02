@@ -17,7 +17,8 @@ function parseInput(argv) {
   return { year: year, month: month - 1 };
 }
 
-function generate(firstDate) {
+function generateCalender(year, month) {
+  const firstDate = new Date(year, month);
   const dateArray = [];
   for (let n = 0; n < firstDate.getDay(); n++) {
     dateArray.push("  ");
@@ -34,16 +35,15 @@ function generate(firstDate) {
   for (let index = 0; index < dateArray.length; index += 7) {
     calendarWeekRows.push(dateArray.slice(index, index + 7).join(" "));
   }
-  return calendarWeekRows.join("\n");
+  console.log(`      ${month + 1}月 ${year}`);
+  console.log("日 月 火 水 木 金 土");
+  console.log(calendarWeekRows.join("\n"));
 }
 
 function main() {
   const { year, month } = parseInput(process.argv);
   if (year === null || month === null) process.exit(1);
-  const firstDate = new Date(year, month);
-  console.log(`      ${month + 1}月 ${year}`);
-  console.log("日 月 火 水 木 金 土");
-  console.log(generate(firstDate));
+  generateCalender(year, month);
 }
 
 main();
