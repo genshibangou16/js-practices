@@ -79,6 +79,43 @@ class AsyncDB extends DB {
   }
 }
 
+async function practice1() {
+  const db = new DB(":memory:");
+  db.run(CREATE, (err) => {
+    if (err) return;
+    db.run(INSERT, (err, res) => {
+      if (err) return;
+      console.log(res.lastID);
+      db.get(SELECT, (err, res) => {
+        if (err) return;
+        console.log(res);
+        db.run(DELETE);
+      });
+    });
+  });
+  await timers.setTimeout(100);
+  db.run(CREATE, (err) => {
+    if (err) {
+      console.log(err.message);
+    }
+    db.run(INSERT_ERROR, (err, res) => {
+      if (err) {
+        console.log(err.message);
+      } else {
+        console.log(res.lastID);
+      }
+      db.get(SELECT_ERROR, (err, res) => {
+        if (err) {
+          console.log(err.message);
+        } else {
+          console.log(res);
+        }
+        db.run(DELETE);
+      });
+    });
+  });
+}
+
 async function practice2() {
   const db = new AsyncDB(":memory:");
   db.run(CREATE)
