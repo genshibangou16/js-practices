@@ -30,11 +30,11 @@ function generate(firstDate) {
   for (let dayNumber = 1; dayNumber <= lastDate.getDate(); dayNumber++) {
     dateArray.push(String(dayNumber).padStart(2));
   }
-  const monthStringArray = [];
+  const calendarWeekRows = [];
   for (let index = 0; index < dateArray.length; index += 7) {
-    monthStringArray.push(dateArray.slice(index, index + 7).join(" "));
+    calendarWeekRows.push(dateArray.slice(index, index + 7).join(" "));
   }
-  return monthStringArray.join("\n");
+  return calendarWeekRows.join("\n");
 }
 
 function main() {
