@@ -119,9 +119,15 @@ async function practice3() {
   await db.run(DELETE);
 }
 
-function main() {
-  practice2();
-  practice3();
+async function main() {
+  console.log("== コールバック ==");
+  await practice1();
+  await timers.setTimeout(100);
+  console.log("== チェーン ==");
+  await practice2();
+  await timers.setTimeout(100);
+  console.log("== await ==");
+  await practice3();
 }
 
 main();
