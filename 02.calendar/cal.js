@@ -2,7 +2,7 @@
 
 import minimist from "minimist";
 
-function parseInput(argv) {
+function getTargetMonth(argv) {
   const date = new Date();
   const { m: month = date.getMonth() + 1, y: year = date.getFullYear() } =
     minimist(argv.slice(2));
@@ -41,7 +41,7 @@ function generateCalender(year, month) {
 }
 
 function main() {
-  const { year, month } = parseInput(process.argv);
+  const { year, month } = getTargetMonth(process.argv);
   if (year === null || month === null) {
     process.exit(1);
     return;
