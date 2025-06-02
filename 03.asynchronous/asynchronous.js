@@ -118,7 +118,8 @@ async function practice1() {
 
 async function practice2() {
   const db = new AsyncDB(":memory:");
-  db.run(CREATE)
+  await db
+    .run(CREATE)
     .then(() => {
       return db.run(INSERT);
     })
@@ -132,10 +133,11 @@ async function practice2() {
       console.log(res);
     })
     .then(() => {
-      db.run(DELETE);
+      return db.run(DELETE);
     });
   await timers.setTimeout(100);
-  db.run(CREATE)
+  await db
+    .run(CREATE)
     .then(() => {
       return db.run(INSERT_ERROR);
     })
@@ -152,7 +154,7 @@ async function practice2() {
       console.log(res);
     })
     .then(() => {
-      db.run(DELETE);
+      return db.run(DELETE);
     })
     .catch((error) => {
       console.error(error.message);
