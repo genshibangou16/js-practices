@@ -14,7 +14,7 @@ function parseInput(argv) {
     console.log(`cal: ${month} is neither a month number (1..12) nor a name`);
     return { year: null, month: null };
   }
-  return { year: year, month: month - 1 };
+  return { year: Number(year), month: month - 1 };
 }
 
 function generateCalender(year, month) {
@@ -42,7 +42,10 @@ function generateCalender(year, month) {
 
 function main() {
   const { year, month } = parseInput(process.argv);
-  if (year === null || month === null) process.exit(1);
+  if (year === null || month === null) {
+    process.exit(1);
+    return;
+  }
   generateCalender(year, month);
 }
 
