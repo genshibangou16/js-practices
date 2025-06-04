@@ -23,11 +23,7 @@ function printCalender(year, month) {
   for (let n = 0; n < firstDate.getDay(); n++) {
     dateArray.push("  ");
   }
-  const lastDate = new Date(
-    firstDate.getFullYear(),
-    firstDate.getMonth() + 1,
-    0,
-  );
+  const lastDate = new Date(year, month + 1, 0);
   for (let dayNumber = 1; dayNumber <= lastDate.getDate(); dayNumber++) {
     dateArray.push(String(dayNumber).padStart(2));
   }
