@@ -12,80 +12,37 @@ const INSERT_BOOK_WITH_AUTHOR =
   "INSERT INTO books (title, author) VALUES ('吾輩は猫である', '夏目漱石');";
 const SELECT_ALL_BOOKS_WITH_AUTHOR = "SELECT id, title, author FROM books;";
 
-class DB {
-  constructor(target) {
-    this.db = new sqlite3.Database(target);
-  }
-  run(sql, ...args) {
-    const { params, callback } = this.extractParamsAndCallback(args);
-    this.db.run(sql, ...params, function (err) {
-      callback(err, this);
-    });
-  }
-  get(sql, ...args) {
-    const { params, callback } = this.extractParamsAndCallback(args);
-    this.db.get(sql, ...params, function (err, row) {
-      callback(err, row);
-    });
-  }
-  all(sql, ...args) {
-    const { params, callback } = this.extractParamsAndCallback(args);
-    this.db.all(sql, ...params, function (err, rows) {
-      callback(err, rows);
-    });
-  }
-  extractParamsAndCallback(args) {
-    const maybeCallback = args[args.length - 1];
-    const isCallback = typeof maybeCallback === "function";
-    const callback = isCallback ? maybeCallback : () => {};
-    const params = isCallback ? args.slice(0, -1) : args;
-    return { callback, params };
-  }
-}
+const db = new sqlite3.Database(":memory:");
 
-class AsyncDB extends DB {
-  run(sql, ...params) {
-    return new Promise((resolve, reject) => {
-      super.run(sql, ...params, function (err, stmt) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(stmt);
-        }
-      });
+function run(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(this);
+      }
     });
-  }
-  get(sql, ...params) {
-    return new Promise((resolve, reject) => {
-      super.get(sql, ...params, function (err, rows) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
+  });
+}
+function get(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, function (err, row) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row);
+      }
     });
-  }
-  all(sql, ...params) {
-    return new Promise((resolve, reject) => {
-      super.all(sql, ...params, function (err, rows) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
-    });
-  }
+  });
 }
 
 async function practice1() {
-  const db = new DB(":memory:");
-  db.run(CREATE_BOOKS_TABLE, () => {
-    db.run(INSERT_BOOK, (_, res) => {
-      console.log(res.lastID);
-      db.get(SELECT_ALL_BOOKS, (_, res) => {
-        console.log(res);
+  db.run(CREATE_BOOKS_TABLE, [], function () {
+    db.run(INSERT_BOOK, [], function () {
+      console.log(this.lastID);
+      db.get(SELECT_ALL_BOOKS, function (_, row) {
+        console.log(row);
         db.run(DROP_BOOKS_TABLE);
       });
     });
@@ -97,17 +54,17 @@ async function practice1() {
     if (err) {
       console.error(err.message);
     }
-    db.run(INSERT_BOOK_WITH_AUTHOR, (err, res) => {
+    db.run(INSERT_BOOK_WITH_AUTHOR, (err) => {
       if (err) {
         console.error(err.message);
       } else {
-        console.log(res.lastID);
+        console.log(this.lastID);
       }
-      db.get(SELECT_ALL_BOOKS_WITH_AUTHOR, (err, res) => {
+      db.get(SELECT_ALL_BOOKS_WITH_AUTHOR, (err, row) => {
         if (err) {
           console.error(err.message);
         } else {
-          console.log(res);
+          console.log(row);
         }
         db.run(DROP_BOOKS_TABLE);
       });
@@ -116,60 +73,58 @@ async function practice1() {
 }
 
 async function practice2() {
-  const db = new AsyncDB(":memory:");
-  await db
-    .run(CREATE_BOOKS_TABLE)
-    .then(() => db.run(INSERT_BOOK))
+  await run(CREATE_BOOKS_TABLE)
+    .then(() => run(INSERT_BOOK))
     .then((res) => {
       console.log(res.lastID);
-      return db.get(SELECT_ALL_BOOKS);
+      return get(SELECT_ALL_BOOKS);
     })
     .then((res) => {
       console.log(res);
-      return db.run(DROP_BOOKS_TABLE);
+      return run(DROP_BOOKS_TABLE);
     });
 
   await timers.setTimeout(100);
 
-  await db
-    .run(CREATE_BOOKS_TABLE)
-    .then(() => db.run(INSERT_BOOK_WITH_AUTHOR))
+  await run(CREATE_BOOKS_TABLE)
+    .then(() => run(INSERT_BOOK_WITH_AUTHOR))
     .then((res) => {
       console.log(res.lastID);
     })
     .catch((error) => {
       console.error(error.message);
     })
-    .then(() => db.get(SELECT_ALL_BOOKS_WITH_AUTHOR))
+    .then(() => get(SELECT_ALL_BOOKS_WITH_AUTHOR))
     .then((res) => {
       console.log(res);
-      return db.run(DROP_BOOKS_TABLE);
     })
     .catch((error) => {
       console.error(error.message);
+    })
+    .finally(() => {
+      return run(DROP_BOOKS_TABLE);
     });
 }
 
 async function practice3() {
-  const db = new AsyncDB(":memory:");
-  await db.run(CREATE_BOOKS_TABLE);
-  const resInsert = await db.run(INSERT_BOOK);
+  await run(CREATE_BOOKS_TABLE);
+  const resInsert = await run(INSERT_BOOK);
   console.log(resInsert.lastID);
-  const resSelect = await db.get(SELECT_ALL_BOOKS);
+  const resSelect = await get(SELECT_ALL_BOOKS);
   console.log(resSelect);
-  await db.run(DROP_BOOKS_TABLE);
+  await run(DROP_BOOKS_TABLE);
 
   await timers.setTimeout(100);
 
-  await db.run(CREATE_BOOKS_TABLE);
+  await run(CREATE_BOOKS_TABLE);
   try {
-    const resInsertErr = await db.run(INSERT_BOOK_WITH_AUTHOR);
+    const resInsertErr = await run(INSERT_BOOK_WITH_AUTHOR);
     console.log(resInsertErr.lastID);
   } catch (error) {
     console.error(error.message);
   }
   try {
-    const resSelectErr = await db.get(SELECT_ALL_BOOKS_WITH_AUTHOR);
+    const resSelectErr = await get(SELECT_ALL_BOOKS_WITH_AUTHOR);
     console.log(resSelectErr);
   } catch (error) {
     if (error.code.startsWith("SQLITE")) {
@@ -178,7 +133,7 @@ async function practice3() {
       throw error;
     }
   }
-  await db.run(DROP_BOOKS_TABLE);
+  await run(DROP_BOOKS_TABLE);
 }
 
 async function main() {
