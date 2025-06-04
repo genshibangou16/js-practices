@@ -172,7 +172,11 @@ async function practice3() {
     const resSelectErr = await db.get(SELECT_ERROR);
     console.log(resSelectErr);
   } catch (error) {
-    console.error(error.message);
+    if (error.code.startsWith("SQLITE")) {
+      console.error(error.message);
+    } else {
+      throw error;
+    }
   }
   await db.run(DELETE);
 }
