@@ -93,17 +93,17 @@ async function practice1() {
   await timers.setTimeout(100);
   db.run(CREATE, (err) => {
     if (err) {
-      console.log(err.message);
+      console.error(err.message);
     }
     db.run(INSERT_ERROR, (err, res) => {
       if (err) {
-        console.log(err.message);
+        console.error(err.message);
       } else {
         console.log(res.lastID);
       }
       db.get(SELECT_ERROR, (err, res) => {
         if (err) {
-          console.log(err.message);
+          console.error(err.message);
         } else {
           console.log(res);
         }
