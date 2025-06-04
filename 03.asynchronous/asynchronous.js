@@ -3,14 +3,14 @@
 import timers from "timers/promises";
 import sqlite3 from "sqlite3";
 
-const CREATE =
+const CREATE_BOOKS_TABLE =
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE);";
-const INSERT = "INSERT INTO books (title) VALUES ('吾輩は猫である');";
-const SELECT = "SELECT id, title FROM books;";
-const DELETE = "DROP TABLE books;";
-const INSERT_ERROR =
+const INSERT_BOOK = "INSERT INTO books (title) VALUES ('吾輩は猫である');";
+const SELECT_ALL_BOOKS = "SELECT id, title FROM books;";
+const DROP_BOOKS_TABLE = "DROP TABLE books;";
+const INSERT_BOOK_WITH_AUTHOR =
   "INSERT INTO books (title, author) VALUES ('吾輩は猫である', '夏目漱石');";
-const SELECT_ERROR = "SELECT id, title, author FROM books;";
+const SELECT_ALL_BOOKS_WITH_AUTHOR = "SELECT id, title, author FROM books;";
 
 class DB {
   constructor(target) {
@@ -81,35 +81,35 @@ class AsyncDB extends DB {
 
 async function practice1() {
   const db = new DB(":memory:");
-  db.run(CREATE, () => {
-    db.run(INSERT, (_, res) => {
+  db.run(CREATE_BOOKS_TABLE, () => {
+    db.run(INSERT_BOOK, (_, res) => {
       console.log(res.lastID);
-      db.get(SELECT, (_, res) => {
+      db.get(SELECT_ALL_BOOKS, (_, res) => {
         console.log(res);
-        db.run(DELETE);
+        db.run(DROP_BOOKS_TABLE);
       });
     });
   });
 
   await timers.setTimeout(100);
 
-  db.run(CREATE, (err) => {
+  db.run(CREATE_BOOKS_TABLE, (err) => {
     if (err) {
       console.error(err.message);
     }
-    db.run(INSERT_ERROR, (err, res) => {
+    db.run(INSERT_BOOK_WITH_AUTHOR, (err, res) => {
       if (err) {
         console.error(err.message);
       } else {
         console.log(res.lastID);
       }
-      db.get(SELECT_ERROR, (err, res) => {
+      db.get(SELECT_ALL_BOOKS_WITH_AUTHOR, (err, res) => {
         if (err) {
           console.error(err.message);
         } else {
           console.log(res);
         }
-        db.run(DELETE);
+        db.run(DROP_BOOKS_TABLE);
       });
     });
   });
@@ -118,32 +118,32 @@ async function practice1() {
 async function practice2() {
   const db = new AsyncDB(":memory:");
   await db
-    .run(CREATE)
-    .then(() => db.run(INSERT))
+    .run(CREATE_BOOKS_TABLE)
+    .then(() => db.run(INSERT_BOOK))
     .then((res) => {
       console.log(res.lastID);
-      return db.get(SELECT);
+      return db.get(SELECT_ALL_BOOKS);
     })
     .then((res) => {
       console.log(res);
-      return db.run(DELETE);
+      return db.run(DROP_BOOKS_TABLE);
     });
 
   await timers.setTimeout(100);
 
   await db
-    .run(CREATE)
-    .then(() => db.run(INSERT_ERROR))
+    .run(CREATE_BOOKS_TABLE)
+    .then(() => db.run(INSERT_BOOK_WITH_AUTHOR))
     .then((res) => {
       console.log(res.lastID);
     })
     .catch((error) => {
       console.error(error.message);
     })
-    .then(() => db.get(SELECT_ERROR))
+    .then(() => db.get(SELECT_ALL_BOOKS_WITH_AUTHOR))
     .then((res) => {
       console.log(res);
-      return db.run(DELETE);
+      return db.run(DROP_BOOKS_TABLE);
     })
     .catch((error) => {
       console.error(error.message);
@@ -152,24 +152,24 @@ async function practice2() {
 
 async function practice3() {
   const db = new AsyncDB(":memory:");
-  await db.run(CREATE);
-  const resInsert = await db.run(INSERT);
+  await db.run(CREATE_BOOKS_TABLE);
+  const resInsert = await db.run(INSERT_BOOK);
   console.log(resInsert.lastID);
-  const resSelect = await db.get(SELECT);
+  const resSelect = await db.get(SELECT_ALL_BOOKS);
   console.log(resSelect);
-  await db.run(DELETE);
+  await db.run(DROP_BOOKS_TABLE);
 
   await timers.setTimeout(100);
 
-  await db.run(CREATE);
+  await db.run(CREATE_BOOKS_TABLE);
   try {
-    const resInsertErr = await db.run(INSERT_ERROR);
+    const resInsertErr = await db.run(INSERT_BOOK_WITH_AUTHOR);
     console.log(resInsertErr.lastID);
   } catch (error) {
     console.error(error.message);
   }
   try {
-    const resSelectErr = await db.get(SELECT_ERROR);
+    const resSelectErr = await db.get(SELECT_ALL_BOOKS_WITH_AUTHOR);
     console.log(resSelectErr);
   } catch (error) {
     if (error.code.startsWith("SQLITE")) {
@@ -178,7 +178,7 @@ async function practice3() {
       throw error;
     }
   }
-  await db.run(DELETE);
+  await db.run(DROP_BOOKS_TABLE);
 }
 
 async function main() {
