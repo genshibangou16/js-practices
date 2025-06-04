@@ -17,7 +17,7 @@ function getTargetMonth(argv) {
   return { year: Number(year), month: month - 1 };
 }
 
-function generateCalender(year, month) {
+function printCalender(year, month) {
   const firstDate = new Date(year, month);
   const dateArray = [];
   for (let n = 0; n < firstDate.getDay(); n++) {
@@ -46,7 +46,7 @@ function main() {
     process.exit(1);
     return;
   }
-  generateCalender(year, month);
+  printCalender(year, month);
 }
 
 main();
