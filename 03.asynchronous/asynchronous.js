@@ -117,40 +117,28 @@ async function practice2() {
   const db = new AsyncDB(":memory:");
   await db
     .run(CREATE)
-    .then(() => {
-      return db.run(INSERT);
-    })
+    .then(() => db.run(INSERT))
     .then((res) => {
       console.log(res.lastID);
-    })
-    .then(() => {
       return db.get(SELECT);
     })
     .then((res) => {
       console.log(res);
-    })
-    .then(() => {
       return db.run(DELETE);
     });
   await timers.setTimeout(100);
   await db
     .run(CREATE)
-    .then(() => {
-      return db.run(INSERT_ERROR);
-    })
+    .then(() => db.run(INSERT_ERROR))
     .then((res) => {
       console.log(res.lastID);
     })
     .catch((error) => {
       console.error(error.message);
     })
-    .then(() => {
-      return db.get(SELECT_ERROR);
-    })
+    .then(() => db.get(SELECT_ERROR))
     .then((res) => {
       console.log(res);
-    })
-    .then(() => {
       return db.run(DELETE);
     })
     .catch((error) => {
