@@ -90,7 +90,9 @@ async function practice1() {
       });
     });
   });
+
   await timers.setTimeout(100);
+
   db.run(CREATE, (err) => {
     if (err) {
       console.error(err.message);
@@ -126,7 +128,9 @@ async function practice2() {
       console.log(res);
       return db.run(DELETE);
     });
+
   await timers.setTimeout(100);
+
   await db
     .run(CREATE)
     .then(() => db.run(INSERT_ERROR))
@@ -154,7 +158,9 @@ async function practice3() {
   const resSelect = await db.get(SELECT);
   console.log(resSelect);
   await db.run(DELETE);
+
   await timers.setTimeout(100);
+
   await db.run(CREATE);
   try {
     const resInsertErr = await db.run(INSERT_ERROR);
