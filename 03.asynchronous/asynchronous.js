@@ -4,7 +4,7 @@ import timers from "timers/promises";
 import sqlite3 from "sqlite3";
 
 const CREATE =
-  "create table books (id integer primary key autoincrement, title text not null unique);";
+  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE);";
 const INSERT = "INSERT INTO books (title) VALUES ('吾輩は猫である');";
 const SELECT = "SELECT id, title FROM books;";
 const DELETE = "DROP TABLE books;";
