@@ -81,13 +81,10 @@ class AsyncDB extends DB {
 
 async function practice1() {
   const db = new DB(":memory:");
-  db.run(CREATE, (err) => {
-    if (err) return;
-    db.run(INSERT, (err, res) => {
-      if (err) return;
+  db.run(CREATE, () => {
+    db.run(INSERT, (_, res) => {
       console.log(res.lastID);
-      db.get(SELECT, (err, res) => {
-        if (err) return;
+      db.get(SELECT, (_, res) => {
         console.log(res);
         db.run(DELETE);
       });
