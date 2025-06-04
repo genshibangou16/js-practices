@@ -149,22 +149,22 @@ async function practice2() {
 async function practice3() {
   const db = new AsyncDB(":memory:");
   await db.run(CREATE);
-  const res_insert = await db.run(INSERT);
-  console.log(res_insert.lastID);
-  const res_select = await db.get(SELECT);
-  console.log(res_select);
+  const resInsert = await db.run(INSERT);
+  console.log(resInsert.lastID);
+  const resSelect = await db.get(SELECT);
+  console.log(resSelect);
   await db.run(DELETE);
   await timers.setTimeout(100);
   await db.run(CREATE);
   try {
-    const res_insert_err = await db.run(INSERT_ERROR);
-    console.log(res_insert_err.lastID);
+    const resInsertErr = await db.run(INSERT_ERROR);
+    console.log(resInsertErr.lastID);
   } catch (error) {
     console.error(error.message);
   }
   try {
-    const res_select_err = await db.get(SELECT_ERROR);
-    console.log(res_select_err);
+    const resSelectErr = await db.get(SELECT_ERROR);
+    console.log(resSelectErr);
   } catch (error) {
     console.error(error.message);
   }
