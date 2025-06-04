@@ -27,13 +27,13 @@ function printCalender(year, month) {
   for (let dayNumber = 1; dayNumber <= lastDate.getDate(); dayNumber++) {
     dateArray.push(String(dayNumber).padStart(2));
   }
-  const calendarWeekRows = [];
+  const weekRows = [];
   for (let index = 0; index < dateArray.length; index += 7) {
-    calendarWeekRows.push(dateArray.slice(index, index + 7).join(" "));
+    weekRows.push(dateArray.slice(index, index + 7).join(" "));
   }
   console.log(`      ${month + 1}月 ${year}`);
   console.log("日 月 火 水 木 金 土");
-  console.log(calendarWeekRows.join("\n"));
+  console.log(weekRows.join("\n"));
 }
 
 function main() {
