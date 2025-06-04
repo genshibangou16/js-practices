@@ -101,9 +101,7 @@ async function practice2() {
     .catch((error) => {
       console.error(error.message);
     })
-    .finally(() => {
-      return run(DROP_BOOKS_TABLE);
-    });
+    .finally(() => run(DROP_BOOKS_TABLE));
 }
 
 async function practice3() {
