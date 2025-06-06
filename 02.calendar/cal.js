@@ -19,17 +19,17 @@ function getTargetMonth(argv) {
 
 function printCalender(year, month) {
   const firstDate = new Date(year, month);
-  const dateArray = [];
+  const dateStringArray = [];
   for (let n = 0; n < firstDate.getDay(); n++) {
-    dateArray.push("  ");
+    dateStringArray.push("  ");
   }
   const lastDate = new Date(year, month + 1, 0);
   for (let dayNumber = 1; dayNumber <= lastDate.getDate(); dayNumber++) {
-    dateArray.push(String(dayNumber).padStart(2));
+    dateStringArray.push(String(dayNumber).padStart(2));
   }
   const weekRows = [];
-  for (let index = 0; index < dateArray.length; index += 7) {
-    weekRows.push(dateArray.slice(index, index + 7).join(" "));
+  for (let index = 0; index < dateStringArray.length; index += 7) {
+    weekRows.push(dateStringArray.slice(index, index + 7).join(" "));
   }
   console.log(`      ${month + 1}月 ${year}`);
   console.log("日 月 火 水 木 金 土");
