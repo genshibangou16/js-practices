@@ -139,10 +139,10 @@ async function main() {
   console.log("== コールバック ==");
   await practice1();
   await timers.setTimeout(100);
-  console.log("== チェーン ==");
+  console.log("== Promise ==");
   await practice2();
   await timers.setTimeout(100);
-  console.log("== await ==");
+  console.log("== async/await ==");
   await practice3();
 }
 
