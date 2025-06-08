@@ -3,14 +3,15 @@
 import timers from "timers/promises";
 import sqlite3 from "sqlite3";
 
-const CREATE_BOOKS_TABLE =
+const SQL_STATEMENT_CREATE =
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE);";
-const INSERT_BOOK = "INSERT INTO books (title) VALUES ('吾輩は猫である');";
-const SELECT_ALL_BOOKS = "SELECT id, title FROM books;";
-const DROP_BOOKS_TABLE = "DROP TABLE books;";
-const INSERT_BOOK_WITH_AUTHOR =
+const SQL_STATEMENT_INSERT =
+  "INSERT INTO books (title) VALUES ('吾輩は猫である');";
+const SQL_STATEMENT_SELECT = "SELECT id, title FROM books;";
+const SQL_STATEMENT_DROP = "DROP TABLE books;";
+const SQL_STATEMENT_INSERT_WITH_ERROR =
   "INSERT INTO books (title, author) VALUES ('吾輩は猫である', '夏目漱石');";
-const SELECT_ALL_BOOKS_WITH_AUTHOR = "SELECT id, title, author FROM books;";
+const SQL_STATEMENT_SELECT_WITH_ERROR = "SELECT id, title, author FROM books;";
 
 const db = new sqlite3.Database(":memory:");
 
