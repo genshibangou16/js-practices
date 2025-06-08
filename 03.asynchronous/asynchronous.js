@@ -76,12 +76,12 @@ async function practice1() {
 async function practice2() {
   await run(CREATE_BOOKS_TABLE)
     .then(() => run(INSERT_BOOK))
-    .then((res) => {
-      console.log(res.lastID);
+    .then((result) => {
+      console.log(result.lastID);
       return get(SELECT_ALL_BOOKS);
     })
-    .then((res) => {
-      console.log(res);
+    .then((result) => {
+      console.log(result);
       return run(DROP_BOOKS_TABLE);
     });
 
@@ -89,15 +89,15 @@ async function practice2() {
 
   await run(CREATE_BOOKS_TABLE)
     .then(() => run(INSERT_BOOK_WITH_AUTHOR))
-    .then((res) => {
-      console.log(res.lastID);
+    .then((result) => {
+      console.log(result.lastID);
     })
     .catch((error) => {
       console.error(error.message);
     })
     .then(() => get(SELECT_ALL_BOOKS_WITH_AUTHOR))
-    .then((res) => {
-      console.log(res);
+    .then((result) => {
+      console.log(result);
     })
     .catch((error) => {
       console.error(error.message);
@@ -107,24 +107,24 @@ async function practice2() {
 
 async function practice3() {
   await run(CREATE_BOOKS_TABLE);
-  const resInsert = await run(INSERT_BOOK);
-  console.log(resInsert.lastID);
-  const resSelect = await get(SELECT_ALL_BOOKS);
-  console.log(resSelect);
+  const resultInsert = await run(INSERT_BOOK);
+  console.log(resultInsert.lastID);
+  const resultSelect = await get(SELECT_ALL_BOOKS);
+  console.log(resultSelect);
   await run(DROP_BOOKS_TABLE);
 
   await timers.setTimeout(100);
 
   await run(CREATE_BOOKS_TABLE);
   try {
-    const resInsertErr = await run(INSERT_BOOK_WITH_AUTHOR);
-    console.log(resInsertErr.lastID);
+    const resultInsertErr = await run(INSERT_BOOK_WITH_AUTHOR);
+    console.log(resultInsertErr.lastID);
   } catch (error) {
     console.error(error.message);
   }
   try {
-    const resSelectErr = await get(SELECT_ALL_BOOKS_WITH_AUTHOR);
-    console.log(resSelectErr);
+    const resultSelectErr = await get(SELECT_ALL_BOOKS_WITH_AUTHOR);
+    console.log(resultSelectErr);
   } catch (error) {
     if (error.code.startsWith("SQLITE")) {
       console.error(error.message);
