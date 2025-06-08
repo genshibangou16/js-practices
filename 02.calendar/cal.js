@@ -2,7 +2,7 @@
 
 import minimist from "minimist";
 
-function getTargetMonth(argv) {
+function getTargetYearMonth(argv) {
   const date = new Date();
   const { m: month = date.getMonth() + 1, y: year = date.getFullYear() } =
     minimist(argv.slice(2));
@@ -14,7 +14,7 @@ function getTargetMonth(argv) {
     console.log(`cal: ${month} is neither a month number (1..12) nor a name`);
     return { year: null, month: null };
   }
-  return { year: Number(year), month: month - 1 };
+  return { year: year, month: month - 1 };
 }
 
 function printCalender(year, month) {
@@ -24,8 +24,8 @@ function printCalender(year, month) {
     dateStringArray.push("  ");
   }
   const lastDate = new Date(year, month + 1, 0);
-  for (let dayNumber = 1; dayNumber <= lastDate.getDate(); dayNumber++) {
-    dateStringArray.push(String(dayNumber).padStart(2));
+  for (let dateNumber = 1; dateNumber <= lastDate.getDate(); dateNumber++) {
+    dateStringArray.push(String(dateNumber).padStart(2));
   }
   const weekRows = [];
   for (let index = 0; index < dateStringArray.length; index += 7) {
@@ -37,10 +37,9 @@ function printCalender(year, month) {
 }
 
 function main() {
-  const { year, month } = getTargetMonth(process.argv);
+  const { year, month } = getTargetYearMonth(process.argv);
   if (year === null || month === null) {
     process.exit(1);
-    return;
   }
   printCalender(year, month);
 }
