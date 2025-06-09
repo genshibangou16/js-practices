@@ -37,8 +37,8 @@ function get(sql, db, params = []) {
 }
 
 async function fbcAsynchronousPracticeCallback(db) {
-  db.run(SQL_STATEMENT_CREATE, [], () => {
-    db.run(SQL_STATEMENT_INSERT, [], function () {
+  db.run(SQL_STATEMENT_CREATE, () => {
+    db.run(SQL_STATEMENT_INSERT, function () {
       console.log(this.lastID);
       db.get(SQL_STATEMENT_SELECT, (_, row) => {
         console.log(row);
