@@ -92,7 +92,7 @@ async function fbcAsynchronousPracticePromise(db) {
     })
     .catch((error) => {
       if (error.code && error.code.startsWith("SQLITE")) {
-      console.error(error.message);
+        console.error(error.message);
       } else {
         throw error;
       }
@@ -103,12 +103,12 @@ async function fbcAsynchronousPracticePromise(db) {
     })
     .catch((error) => {
       if (error.code && error.code.startsWith("SQLITE")) {
-      console.error(error.message);
+        console.error(error.message);
       } else {
         throw error;
       }
     })
-    .finally(() => run(SQL_STATEMENT_DROP, db));
+    .then(() => run(SQL_STATEMENT_DROP, db));
 }
 
 async function fbcAsynchronousPracticeAsyncAwait(db) {
@@ -127,7 +127,7 @@ async function fbcAsynchronousPracticeAsyncAwait(db) {
     console.log(resultInsertErr.lastID);
   } catch (error) {
     if (error.code && error.code.startsWith("SQLITE")) {
-    console.error(error.message);
+      console.error(error.message);
     } else {
       throw error;
     }
