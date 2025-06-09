@@ -38,7 +38,7 @@ function get(sql, params = []) {
   });
 }
 
-async function practice1() {
+async function fbcAsynchronousPracticeCallback() {
   db.run(CREATE_BOOKS_TABLE, [], function () {
     db.run(INSERT_BOOK, [], function () {
       console.log(this.lastID);
@@ -73,7 +73,7 @@ async function practice1() {
   });
 }
 
-async function practice2() {
+async function fbcAsynchronousPracticePromise() {
   await run(CREATE_BOOKS_TABLE)
     .then(() => run(INSERT_BOOK))
     .then((result) => {
@@ -105,7 +105,7 @@ async function practice2() {
     .finally(() => run(DROP_BOOKS_TABLE));
 }
 
-async function practice3() {
+async function fbcAsynchronousPracticeAsyncAwait() {
   await run(CREATE_BOOKS_TABLE);
   const resultInsert = await run(INSERT_BOOK);
   console.log(resultInsert.lastID);
@@ -137,13 +137,13 @@ async function practice3() {
 
 async function main() {
   console.log("== コールバック ==");
-  await practice1();
+  await fbcAsynchronousPracticeCallback();
   await timers.setTimeout(100);
   console.log("== Promise ==");
-  await practice2();
+  await fbcAsynchronousPracticePromise();
   await timers.setTimeout(100);
   console.log("== async/await ==");
-  await practice3();
+  await fbcAsynchronousPracticeAsyncAwait();
 }
 
 main();
