@@ -37,91 +37,91 @@ function get(sql, db, params = []) {
 }
 
 async function fbcAsynchronousPracticeCallback(db) {
-  db.run(CREATE_BOOKS_TABLE, [], function () {
-    db.run(INSERT_BOOK, [], function () {
+  db.run(SQL_STATEMENT_CREATE, [], function () {
+    db.run(SQL_STATEMENT_INSERT, [], function () {
       console.log(this.lastID);
-      db.get(SELECT_ALL_BOOKS, function (_, row) {
+      db.get(SQL_STATEMENT_SELECT, function (_, row) {
         console.log(row);
-        db.run(DROP_BOOKS_TABLE);
+        db.run(SQL_STATEMENT_DROP);
       });
     });
   });
 
   await timers.setTimeout(100);
 
-  db.run(CREATE_BOOKS_TABLE, (err) => {
+  db.run(SQL_STATEMENT_CREATE, (err) => {
     if (err) {
       console.error(err.message);
     }
-    db.run(INSERT_BOOK_WITH_AUTHOR, (err) => {
+    db.run(SQL_STATEMENT_INSERT_WITH_ERROR, (err) => {
       if (err) {
         console.error(err.message);
       } else {
         console.log(this.lastID);
       }
-      db.get(SELECT_ALL_BOOKS_WITH_AUTHOR, (err, row) => {
+      db.get(SQL_STATEMENT_SELECT_WITH_ERROR, (err, row) => {
         if (err) {
           console.error(err.message);
         } else {
           console.log(row);
         }
-        db.run(DROP_BOOKS_TABLE);
+        db.run(SQL_STATEMENT_DROP);
       });
     });
   });
 }
 
 async function fbcAsynchronousPracticePromise(db) {
-  await run(CREATE, db)
-    .then(() => run(INSERT, db))
+  await run(SQL_STATEMENT_CREATE, db)
+    .then(() => run(SQL_STATEMENT_INSERT, db))
     .then((result) => {
       console.log(result.lastID);
-      return get(SELECT, db);
+      return get(SQL_STATEMENT_SELECT, db);
     })
     .then((result) => {
       console.log(result);
-      return run(DROP, db);
+      return run(SQL_STATEMENT_DROP, db);
     });
 
   await timers.setTimeout(100);
 
-  await run(CREATE, db)
-    .then(() => run(INSERT_BOOK_WITH_AUTHOR, db))
+  await run(SQL_STATEMENT_CREATE, db)
+    .then(() => run(SQL_STATEMENT_INSERT_WITH_ERROR, db))
     .then((result) => {
       console.log(result.lastID);
     })
     .catch((error) => {
       console.error(error.message);
     })
-    .then(() => get(SELECT_ALL_BOOKS_WITH_AUTHOR, db))
+    .then(() => get(SQL_STATEMENT_SELECT_WITH_ERROR, db))
     .then((result) => {
       console.log(result);
     })
     .catch((error) => {
       console.error(error.message);
     })
-    .finally(() => run(DROP, db));
+    .finally(() => run(SQL_STATEMENT_DROP, db));
 }
 
 async function fbcAsynchronousPracticeAsyncAwait(db) {
-  await run(CREATE, db);
-  const resultInsert = await run(INSERT, db);
+  await run(SQL_STATEMENT_CREATE, db);
+  const resultInsert = await run(SQL_STATEMENT_INSERT, db);
   console.log(resultInsert.lastID);
-  const resultSelect = await get(SELECT, db);
+  const resultSelect = await get(SQL_STATEMENT_SELECT, db);
   console.log(resultSelect);
-  await run(DROP, db);
+  await run(SQL_STATEMENT_DROP, db);
 
   await timers.setTimeout(100);
 
-  await run(CREATE, db);
+  await run(SQL_STATEMENT_CREATE, db);
   try {
-    const resultInsertErr = await run(INSERT_BOOK_WITH_AUTHOR, db);
+    const resultInsertErr = await run(SQL_STATEMENT_INSERT_WITH_ERROR, db);
     console.log(resultInsertErr.lastID);
   } catch (error) {
     console.error(error.message);
   }
   try {
-    const resultSelectErr = await get(SELECT_ALL_BOOKS_WITH_AUTHOR, db);
+    const resultSelectErr = await get(SQL_STATEMENT_SELECT_WITH_ERROR, db);
     console.log(resultSelectErr);
   } catch (error) {
     if (error.code.startsWith("SQLITE")) {
@@ -130,7 +130,7 @@ async function fbcAsynchronousPracticeAsyncAwait(db) {
       throw error;
     }
   }
-  await run(DROP, db);
+  await run(SQL_STATEMENT_DROP, db);
 }
 
 async function main() {
