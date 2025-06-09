@@ -91,14 +91,22 @@ async function fbcAsynchronousPracticePromise(db) {
       console.log(result.lastID);
     })
     .catch((error) => {
+      if (error.code && error.code.startsWith("SQLITE")) {
       console.error(error.message);
+      } else {
+        throw error;
+      }
     })
     .then(() => get(SQL_STATEMENT_SELECT_WITH_ERROR, db))
     .then((result) => {
       console.log(result);
     })
     .catch((error) => {
+      if (error.code && error.code.startsWith("SQLITE")) {
       console.error(error.message);
+      } else {
+        throw error;
+      }
     })
     .finally(() => run(SQL_STATEMENT_DROP, db));
 }
@@ -118,13 +126,17 @@ async function fbcAsynchronousPracticeAsyncAwait(db) {
     const resultInsertErr = await run(SQL_STATEMENT_INSERT_WITH_ERROR, db);
     console.log(resultInsertErr.lastID);
   } catch (error) {
+    if (error.code && error.code.startsWith("SQLITE")) {
     console.error(error.message);
+    } else {
+      throw error;
+    }
   }
   try {
     const resultSelectErr = await get(SQL_STATEMENT_SELECT_WITH_ERROR, db);
     console.log(resultSelectErr);
   } catch (error) {
-    if (error.code.startsWith("SQLITE")) {
+    if (error.code && error.code.startsWith("SQLITE")) {
       console.error(error.message);
     } else {
       throw error;
