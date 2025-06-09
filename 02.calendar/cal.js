@@ -37,11 +37,15 @@ function printCalender(year, month) {
 }
 
 function main() {
-  const { year, month } = getTargetYearMonth(process.argv);
-  if (year === null || month === null) {
+  try {
+    const { year, month } = getTargetYearMonth(process.argv);
+    if (year === null || month === null) {
+      throw new Error("Invalid year or month");
+    }
+    printCalender(year, month);
+  } catch {
     process.exit(1);
   }
-  printCalender(year, month);
 }
 
 main();
