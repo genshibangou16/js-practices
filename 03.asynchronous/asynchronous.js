@@ -26,7 +26,7 @@ function run(sql, db, params = []) {
 }
 function get(sql, db, params = []) {
   return new Promise((resolve, reject) => {
-    db.get(sql, params, function (err, row) {
+    db.get(sql, params, (err, row) => {
       if (err) {
         reject(err);
       } else {
@@ -37,10 +37,10 @@ function get(sql, db, params = []) {
 }
 
 async function fbcAsynchronousPracticeCallback(db) {
-  db.run(SQL_STATEMENT_CREATE, [], function () {
+  db.run(SQL_STATEMENT_CREATE, [], () => {
     db.run(SQL_STATEMENT_INSERT, [], function () {
       console.log(this.lastID);
-      db.get(SQL_STATEMENT_SELECT, function (_, row) {
+      db.get(SQL_STATEMENT_SELECT, (_, row) => {
         console.log(row);
         db.run(SQL_STATEMENT_DROP);
       });
