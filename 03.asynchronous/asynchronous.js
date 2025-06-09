@@ -49,10 +49,7 @@ async function fbcAsynchronousPracticeCallback(db) {
 
   await timers.setTimeout(100);
 
-  db.run(SQL_STATEMENT_CREATE, (err) => {
-    if (err) {
-      console.error(err.message);
-    }
+  db.run(SQL_STATEMENT_CREATE, () => {
     db.run(SQL_STATEMENT_INSERT_WITH_ERROR, (err) => {
       if (err) {
         console.error(err.message);
